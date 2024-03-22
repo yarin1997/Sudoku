@@ -1,10 +1,5 @@
-// let webSudoku=[
-//      [3,0,0,0,4,0,0,0,0],[5,0,0,0,0,6,0,7,0],[0,9,0,0,8,0,5,0,0]
-//     ,[0,0,5,0,0,6,0,7,0],[3,0,0,0,2,0,4,9,0],[0,2,0,4,0,0,1,0,0]
-//     ,[0,0,4,0,8,0,0,2,0],[0,3,0,2,0,0,0,0,4],[0,0,0,0,4,0,0,0,3]
-    
-// ]
 
+let randomArr;
 let array2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -16,7 +11,7 @@ let array2 = [
        [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-const solutionArray = [
+const solutionArray = [[
     [1, 9, 7, 4, 8, 5, 3, 2, 6],
     [8, 5, 6, 1, 3, 2, 9, 4, 7],
     [4, 2, 3, 7,6, 9, 8, 5, 1],
@@ -26,15 +21,45 @@ const solutionArray = [
     [2, 3, 1, 5, 4, 9, 7, 6, 8],
     [7, 8, 4, 3, 6, 1, 2, 9, 5],
     [5, 9, 6, 2, 8, 7, 3, 1, 4]
-]
+],
+ [
+ [5,3,4,6,7,2,1,9,8],
+ [6,7,8,1,9,5,3,4,2],
+ [9,1,2,3,4,8,5,6,7],
+ [8,5,9,4,2,6,7,1,3],
+ [7,6,1,8,5,3,9,2,4],
+ [4,2,3,7,9,1,8,5,6],
+ [9,6,1,2,8,7,3,4,5],
+ [5,3,7,4,1,9,2,8,6],
+ [2,8,4,6,3,5,1,7,9]
+    ],
+    [
+     [6,3,4,7,8,1,2,9,5],
+    [8,9,1,5,2,6,3,4,7],
+    [7,2,5,4,9,3,8,6,1],
+    [5,4,2,3,7,6,8,1,9],
+    [9,6,8,2,1,4,7,5,3],
+    [1,3,7,9,5,8,2,4,6],
+    [1,6,8,4,2,3,9,5,7],
+    [4,3,9,1,7,5,6,8,2],
+    [5,7,2,6,8,9,3,1,4]
+]];
 
 let input = document.getElementById('input');
 const createBoard = document.getElementById('btn5');
 let para = document.getElementById('p');
-
+console.log(solutionArray.length)
 createBoard.addEventListener('click', () => {
+   if(!isEmpty(array2))
+   {
+    cleanBoard();
+   }
+    randomArr=0;
+    randomArr=Math.floor(Math.random()*solutionArray.length);
+    console.log("random arr "+randomArr)
+    console.log(solutionArray[randomArr])
     if (input.value !== '') {
-        if (input.value < 18 || input.value > 35) {
+        if (input.value<18 || input.value> 35) {
             para.innerHTML = 'הלוח מתחיל עם18-35 משבצות מלאות';
             return false;
         }
@@ -49,12 +74,10 @@ createBoard.addEventListener('click', () => {
         console.log(i, j)
         if(count>0)
         while(  array2[i][j] !== 0)  {
-            
             i = Math.floor(Math.random() * 9);
             j = Math.floor(Math.random() * 9);
-            
         }
-        array2[i][j]=solutionArray[i][j];
+        array2[i][j]=solutionArray[randomArr][i][j];
         console.log(array2[i][j])
         count++;
           console.log("OK+"+count)
@@ -86,11 +109,24 @@ function checkLength(array2) {
     }
     return count2;
 }
+function isEmpty(array2) {
+
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            if (array2[i][j] !== 0) {
+                return false;
+            }
+        }
+    }
+    
+    return true;
+    }
 
 //---------------------------------------------------------------------------------------------
 
 let suduko = [];
 let div = document.createElement('div');
+newBoard();
 // פונקציה שמייצרת את מבנה לוח המשחק וממקמת איקס מספרים באיקס משבצות
 function newBoard() {
     document.getElementById('board').innerHTML = '';
@@ -129,9 +165,10 @@ function newBoard() {
         div.appendChild(div2);
         suduko.push(arr);
     }
-    // להוסיף את הלוח לדפדפן
-    document.getElementById('board').appendChild(div);
 
+    // להוסיף את הלוח לדפדפן
+
+    document.getElementById('board').appendChild(div);
     div.addEventListener('change', function(event){
         let elementIDName = event.target.id
         console.log( elementIDName)
@@ -205,57 +242,11 @@ console.log('נכנסתי לפונקצית הבדיקה')
             x++;
             setTimeout(() => {
                 element.classList.add('win')
-            }, x * 30)
+            }, x * 20)
         }
     }
     // alert('you win')
 })
-
-// function checkValues(arr) {
-//     for (let i = 0; i < arr.length; i++) {
-//         if (arr.lastIndexOf(arr[i]) != i) {
-//             return false;
-//         }        
-//     }
-//     return true;
-// }
-
-// function checkRows3() {
-//     const flat = sudokuArr.flat();
-//     for (let rowIndex = 0; rowIndex < 9; rowIndex++) {
-//         const row = flat.filter(function(item, index) {
-//             return [0,1,2].includes(index % 9);
-//         })
-//         if (!checkValidButton(row)) {
-//             return false
-//         }
-//     }
-
-
-//     for (let rowIndex = 0; rowIndex < 9; rowIndex++) {
-//         const row = [];
-//         const blockIndex = Math.floor(rowIndex/3)
-//         for (let i = blockIndex; i < 3; blockIndex++) {
-//             row.push(sudokuArr[blockIndex][])
-//             // xxx xxx xxx 0,1,2,9,10,11,18,19,20
-//             // xxx xxx xxx 3,4,5,12,13,14,21,22,23
-//             // xxx xxx xxx 6,7,8,15,16,17,24,25,26
-//             //
-//             // xxx xxx xxx 27,28,29,36,37,38,45,46,47 
-//             // xxx xxx xxx  30,31,32,39,40,41,48,49,50 
-//             // xxx xxx xxx 
-//             //
-//             // xxx xxx xxx
-//             // xxx xxx xxx
-//             // xxx xxx xxx 
-            
-//         }
-//         if (!checkValues(row)) {
-//             return false
-//         }
-
-//     }
-// }
 
 
 // פונקציה אשר בודקת על כל איבר שהוא לשהוא לא שובר בשורה שלו את חוקי הפורמט
@@ -303,10 +294,12 @@ function checkSquare(num1, num2, i, j, n) {
 
 const btnFillBoard = document.getElementById('btn2');
 btnFillBoard.addEventListener('click', () => {
+    if(isEmpty(suduko))
+    return false;
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             let element = document.getElementById(`cell${(i * 9) + (j + 1)}`);
-            suduko[i][j].value = solutionArray[i][j];
+            suduko[i][j].value = solutionArray[randomArr][i][j];
             suduko[i][j] = element;
         }
     }
@@ -317,44 +310,15 @@ document.body.appendChild(btn3);
 btnSolve.addEventListener('click', () => {
     solveSudoku(suduko)
 })
-// let solveSudoku = function (board) {
-//     for (let i = 0; i < board.length; i++) {
-//         for (let j = 0; j < board.length; j++) {
-//             if (board[i][j] === '') {
-//                 for (let l = 1; l < 10; l++) {
-//                     if (isValid(board, i, j, l.toString())) {
-//                         board[i][j] = l.toString()
-//                         let solved = solveSudoku(board)
-//                         if (solved !== false) return solved   // if we never hit false outside this loop then it means the board is a solution
-//                         board[i][j] = ''                     // if it was false then reset the value
-//                     }
-//                 }
-//                 return false                                  // if we exit the for loop it means there was no solution so return false
-//             }
-//         }
-//     }
-//     console.log(board)
-//     return board
-// };
-
-// function isValid(board, i, j, l) {
-//     for (let p = 0; p < board.length; p++) {
-//         if (board[i][p] === l) return false
-//         if (board[p][j] === l) return false
-
-//         let gridVal = board[3 * Math.floor(i / 3) + Math.floor(p / 3)][3 * Math.floor(j / 3) + p % 3]
-//         // 3 * Math.floor(i/3) and 3 * Math.floor(j/3) are the coordinates for 
-//         // the top-left square of the 3x3 grid that the value is in
-//         if (gridVal === l) return false
-//     }
-
-//     return true
-// }
 
 
 // כפתור שמנקה את לוח המשחק
 const btnClearBoard = document.getElementById('btn4');
 btnClearBoard.addEventListener('click', () => {
+cleanBoard();
+})
+
+function cleanBoard() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             array2[i][j] = 0;
@@ -370,7 +334,7 @@ btnClearBoard.addEventListener('click', () => {
         element.value=''
     });
 }
-});
+};
 
 function checkSquare2(i, j, num) {
     console.log("check square")
@@ -413,27 +377,3 @@ console.log("check column")
        console.log('true')
     return true
 }
-// function checkColumnByID(id,num){
-// let newId=id%9
-// let
-//     for(let i=0; i<3; i++){
-//         for(let j=newId; j<=newId+9; j+=3){
-//             if(suduko.getElementById(newId).value)
-//             if(suduko.getElementById(`cell${j})`).value==num && j!=id){
-//                 return false;
-//             }
-//             newId+=27;
-//         }
-//     }
-//     return true;
-// }
-// const solution=[ [3, 8, 7, 6, 4, 5, 9, 1, 2],
-//     [5, 1, 2, 9, 3, 6, 8, 7, 4],
-//     [4, 9, 6, 7, 8, 1, 5, 3, 2],
-//     [8, 4, 5, 3, 1, 9, 2, 7, 6],
-//     [3, 7, 1, 8, 2, 4, 6, 9, 5],
-//     [6, 2, 9, 4, 5, 7, 1, 8, 3],
-//     [7, 6, 4, 5, 8, 3, 3, 2, 9],
-//     [9, 3, 8, 2, 7, 4, 1, 6, 4],
-//     [2, 5, 3, 1, 6, 9, 7, 4, 8]
-// ];
